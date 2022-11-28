@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { ConnectionAcquireTimeoutError } = require('sequelize');
 const { Category, Product } = require('../../models');
 const sequelize = require('../config/connection')
 
@@ -17,7 +18,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // find one category by its `id` value
   // be sure to include its associated Products
   try {
@@ -26,8 +27,8 @@ router.get('/:id', (req, res) => {
     })
     res.status(200).json(category)
 
-    if(!category){
-      res.status(404).json({ message : "No"})
+    if (!category) {
+      res.status(404).json({ message: "No" })
     }
   }
   catch (error) {
@@ -35,23 +36,46 @@ router.get('/:id', (req, res) => {
   }
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   // create a new category
-  try{
+  try {
     const newCategory = await Category.create(req.body)
     res.status(200).json(newCategory)
   }
-  catch(error){
+  catch (error) {
     res.status(400).json(error)
   }
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   // update a category by its `id` value
+  try {
+    const result = await Category.update(req.body, {
+      where: {
+        id: req.params.category_id
+      }
+    })
+    res.json(result)
+  }
+  catch (error) {
+    res.status(500).json(error)
+  }
+
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
+  try {
+    const result = await Category.destroy({
+      where: {
+        id: req.params.category_id
+      }
+    })
+    res.json(result)
+  }
+  catch (error) {
+    res.status(500).json(error)
+  }
 });
 
 module.exports = router;
