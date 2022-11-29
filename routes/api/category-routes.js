@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const { ConnectionAcquireTimeoutError } = require('sequelize');
+// const { ConnectionAcquireTimeoutError } = require('sequelize');
 const { Category, Product } = require('../../models');
-const sequelize = require('../config/connection')
+// const sequelize = require('../config/connection')
 
 // The `/api/categories` endpoint
 
@@ -52,7 +52,7 @@ router.put('/:id', async (req, res) => {
   try {
     const result = await Category.update(req.body, {
       where: {
-        id: req.params.category_id
+        id: req.params.id
       }
     })
     res.json(result)
@@ -65,10 +65,11 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
+  console.log('delete route hit')
   try {
     const result = await Category.destroy({
       where: {
-        id: req.params.category_id
+        id: req.params.id
       }
     })
     res.json(result)
