@@ -14,7 +14,7 @@ An ecommerce backend developed with sequelize and express.
 * [sequelize](https://sequelize.org/)
 
 ## Demonstration
-![Demo of Ecommerce Backend]
+Demo of Ecommerce Backend
 
 https://app.castify.com/view/3462cf6a-e5bd-493a-8863-d48abb087291
 
