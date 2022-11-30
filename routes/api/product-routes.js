@@ -7,6 +7,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 router.get('/', async (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
+  console.log('get route hit')
   try {
     const allProducts = await Product.findAll({
       include: [{ model: Category }, { model: Tag }]
@@ -22,6 +23,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
+  console.log('get by id route hit')
   try {
     const product = await Product.findByPk(req.params.id, {
       include: [{ model: Category }, { model: Tag }]
@@ -35,6 +37,7 @@ router.get('/:id', async (req, res) => {
 
 // create new product
 router.post('/', async (req, res) => {
+  console.log('post route hit')
   /* req.body should look like this...
     {
       product_name: "Basketball",
@@ -67,6 +70,7 @@ router.post('/', async (req, res) => {
 
 // update product
 router.put('/:id', (req, res) => {
+  console.log('put route hit')
   // update product data
   Product.update(req.body, {
     where: {
@@ -107,8 +111,20 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
+  console.log('delete route hit')
   // delete one product by its `id` value
+  try {
+    const result = await Product.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    res.json(result)
+  }
+  catch (error) {
+    res.status(500).json(error)
+  }
 });
 
 module.exports = router;
