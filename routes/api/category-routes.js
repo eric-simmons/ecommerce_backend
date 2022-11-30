@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
     res.status(200).json(category)
 
     if (!category) {
-      res.status(404).json({ message: "No" })
+      res.status(404).json({ message: "Category doesnt exist" })
     }
   }
   catch (error) {
